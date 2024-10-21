@@ -1,0 +1,194 @@
+%implements s0_b0_cm2cf_TLCInterface "C"
+
+%function getInputAddr_0_1_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<2264*//*@>225d*/untitled_P./*@>2269*/Constant_Value"
+%endfunction
+
+%function getInput_0_1_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>2276*/untitled_P./*@>2283*/Constant_Value"
+%endfunction
+
+%function getOutputAddr_0_2_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<22a6*//*@>22a1*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>22b3*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<22cc*//*@>22c5*/untitled_DW./*@>22d1*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_0_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>22de*/untitled_DW./*@>22eb*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getInputAddr_0_1_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getInput_0_1_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getOutputAddr_0_2_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<2336*//*@>2331*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>2343*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<235c*//*@>2355*/untitled_DW./*@>2361*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_1_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>236e*/untitled_DW./*@>237b*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getInputAddr_0_1_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getInput_0_1_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getOutputAddr_0_2_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<23c6*//*@>23c1*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>23d3*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<23ec*//*@>23e5*/untitled_DW./*@>23f1*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_2_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>23fe*/untitled_DW./*@>240b*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getInputAddr_0_1_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getInput_0_1_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getOutputAddr_0_2_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<2456*//*@>2451*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>2463*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<247c*//*@>2475*/untitled_DW./*@>2481*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_3_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>248e*/untitled_DW./*@>249b*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getInputAddr_0_1_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getInput_0_1_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getOutputAddr_0_2_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<24e6*//*@>24e1*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>24f3*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<250c*//*@>2505*/untitled_DW./*@>2511*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_4_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>251e*/untitled_DW./*@>252b*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getInputAddr_0_1_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getInput_0_1_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return ""
+%endfunction
+
+%function getOutputAddr_0_2_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "&/*@<25b2*//*@>25ad*/rtb_SerialReceive"
+%endfunction
+
+%function getOutput_0_2_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+%<SLibCGIRAccessLocalVar(0, 0, "")> %% rtb_SerialReceive
+
+%return "/*@>25bf*/rtb_SerialReceive"
+%endfunction
+
+%function getDWorkAddr_0_2_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "&/*@<25d8*//*@>25d1*/untitled_DW./*@>25dd*/SerialReceive_CustomOutValue"
+%endfunction
+
+%function getDWork_0_2_0_5_0_0(opaqueBlock, block, lcv, ucv, sigIdx, reim) void
+
+%return "/*@>25ea*/untitled_DW./*@>25f7*/SerialReceive_CustomOutValue"
+%endfunction
+

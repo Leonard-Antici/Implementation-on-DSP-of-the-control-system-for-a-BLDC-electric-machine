@@ -1,0 +1,91 @@
+%implements s0_b0_cm2cf_ModelInitialize "C"
+
+%function ModelInitialize(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcSetupRuntimeResourcesFcnOfS0B1 = OpaqueTLCBlockFcn("SetupRuntimeResources", 0, 1, 0, 5)
+%assign tlcSetupRuntimeResourcesFcnOfS0B2 = OpaqueTLCBlockFcn("SetupRuntimeResources", 0, 2, 0, 5)
+%assign tlcSetupRuntimeResourcesFcnOfS0B3 = OpaqueTLCBlockFcn("SetupRuntimeResources", 0, 3, 0, 5)
+%assign tlcStartFcnOfS0B1 = OpaqueTLCBlockFcn("Start", 0, 1, 0, 5)
+%assign tlcStartFcnOfS0B2 = OpaqueTLCBlockFcn("Start", 0, 2, 0, 5)
+%assign tlcStartFcnOfS0B3 = OpaqueTLCBlockFcn("Start", 0, 3, 0, 5)
+%assign tlcInitializeConditionsFcnOfS0B1 = OpaqueTLCBlockFcn("InitializeConditions", 0, 1, 0, 5)
+%assign tlcInitializeConditionsFcnOfS0B2 = OpaqueTLCBlockFcn("InitializeConditions", 0, 2, 0, 5)
+%assign tlcInitializeConditionsFcnOfS0B3 = OpaqueTLCBlockFcn("InitializeConditions", 0, 3, 0, 5)
+%assign tlcEnableFcnOfS0B1 = OpaqueTLCBlockFcn("Enable", 0, 1, 0, 5)
+%assign tlcEnableFcnOfS0B2 = OpaqueTLCBlockFcn("Enable", 0, 2, 0, 5)
+%assign tlcEnableFcnOfS0B3 = OpaqueTLCBlockFcn("Enable", 0, 3, 0, 5)
+%<SLibInsertAsyncTaskInitializeCode(system)>
+%<SLibWriteMachineInitialize()>
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS0B1)
+/* SetupRuntimeResources for M-S-Function: '<Root>/Serial Send' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[1fd0*/",tlcSetupRuntimeResourcesFcnOfS0B1,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS0B2)
+/* SetupRuntimeResources for M-S-Function: '<Root>/Serial Receive' */
+%<SLibCG_DumpSSCode("/*@[1fd3*/",tlcSetupRuntimeResourcesFcnOfS0B2,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcSetupRuntimeResourcesFcnOfS0B3)
+/* SetupRuntimeResources for M-S-Function: '<Root>/Serial Configuration1' */
+%<SLibCG_DumpSSCode("/*@[1fd4*/",tlcSetupRuntimeResourcesFcnOfS0B3,"/*@]*/")>\
+%endif
+%<SLibCGIRDumpSystemUserCode(0, "Start", "Header")>\
+%<SLibCGIRDumpSystemUserCode(0, "Start", "Body")>\
+%if !WHITE_SPACE(tlcStartFcnOfS0B1)
+/* Start for M-S-Function: '<Root>/Serial Send' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[1fd8*/",tlcStartFcnOfS0B1,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS0B2)
+/* Start for M-S-Function: '<Root>/Serial Receive' */
+%<SLibCG_DumpSSCode("/*@[1fdb*/",tlcStartFcnOfS0B2,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcStartFcnOfS0B3)
+/* Start for M-S-Function: '<Root>/Serial Configuration1' */
+%<SLibCG_DumpSSCode("/*@[1fdc*/",tlcStartFcnOfS0B3,"/*@]*/")>\
+%endif
+%<SLibCGIRDumpSystemUserCode(0, "Start", "Trailer")>\
+%if !WHITE_SPACE(tlcInitializeConditionsFcnOfS0B1)
+/* InitializeConditions for M-S-Function: '<Root>/Serial Send' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[1fdf*/",tlcInitializeConditionsFcnOfS0B1,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcInitializeConditionsFcnOfS0B2)
+/* InitializeConditions for M-S-Function: '<Root>/Serial Receive' */
+%<SLibCG_DumpSSCode("/*@[1fe2*/",tlcInitializeConditionsFcnOfS0B2,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcInitializeConditionsFcnOfS0B3)
+/* InitializeConditions for M-S-Function: '<Root>/Serial Configuration1' */
+%<SLibCG_DumpSSCode("/*@[1fe3*/",tlcInitializeConditionsFcnOfS0B3,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS0B1)
+/* Enable for M-S-Function: '<Root>/Serial Send' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[1fe5*/",tlcEnableFcnOfS0B1,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS0B2)
+/* Enable for M-S-Function: '<Root>/Serial Receive' */
+%<SLibCG_DumpSSCode("/*@[1fe8*/",tlcEnableFcnOfS0B2,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcEnableFcnOfS0B3)
+/* Enable for M-S-Function: '<Root>/Serial Configuration1' */
+%<SLibCG_DumpSSCode("/*@[1fe9*/",tlcEnableFcnOfS0B3,"/*@]*/")>\
+%endif
+%<SLibInsertInitPeriodicCStatesFcn(system)>
+%closefile cfgTxt
+%<cfgTxt>
+%endfunction
+%function ModelInitializeFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void ModelInitialize(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 5, fcnProtoType)>
+%endfunction

@@ -1,0 +1,36 @@
+%implements s0_b0_cm2cf_Outputs "C"
+
+%function Outputs(block, system) Output
+%assign cfgTxt = ""
+%openfile cfgTxt
+%assign localVarDecl = ""
+%assign tlcOutputsFcnOfS0B1 = OpaqueTLCBlockFcn("Outputs", 0, 1, 0, 0)
+%assign tlcOutputsFcnOfS0B2 = OpaqueTLCBlockFcn("Outputs", 0, 2, 0, 0)
+%assign tlcOutputsFcnOfS0B3 = OpaqueTLCBlockFcn("Outputs", 0, 3, 0, 0)
+%if !WHITE_SPACE(tlcOutputsFcnOfS0B1)
+/* M-S-Function: '<Root>/Serial Send' incorporates:
+ *  Constant: '<Root>/Constant'
+ */
+%<SLibCG_DumpSSCode("/*@[1f86*/",tlcOutputsFcnOfS0B1,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS0B2)
+/* M-S-Function: '<Root>/Serial Receive' */
+%<SLibCG_DumpSSCode("/*@[1f89*/",tlcOutputsFcnOfS0B2,"/*@]*/")>\
+%endif
+%if !WHITE_SPACE(tlcOutputsFcnOfS0B3)
+/* M-S-Function: '<Root>/Serial Configuration1' */
+%<SLibCG_DumpSSCode("/*@[1f8a*/",tlcOutputsFcnOfS0B3,"/*@]*/")>\
+%endif
+%<SLibInsertSolverResetCode()>\
+%closefile cfgTxt
+%<cfgTxt>
+%<LibSetSystemField(system, "CachedOutputLocalVars", localVarDecl)>
+%endfunction
+%function OutputsFcnProtoType(block, system) Output
+%assign fcnProtoType = ""
+%openfile fcnProtoType
+static void Outputs(\
+%assign comma = ""
+%closefile fcnProtoType
+%<SLibCG_SetFcnProtoType(0, 0, fcnProtoType)>
+%endfunction

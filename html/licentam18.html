@@ -1,0 +1,386 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>1. Codul MATLAB pentru controller-ul PI &acirc;&#8364;&#8220; params_PI</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2024-05-11"><meta name="DC.source" content="licentam18.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>1. Codul MATLAB pentru controller-ul PI &acirc;&#8364;&#8220; params_PI</h1><pre class="codeinput">clc
+clear <span class="string">all</span>
+close <span class="string">all</span>
+F = 200*10^6; <span class="comment">%[Hz] system clock</span>
+TTBCLK = 1/F;
+TiSamplePhaCrt = 10^-4;
+Tf_spd = 0.01;
+<span class="comment">% Inverter PWM config.</span>
+F_PWM = 20000; <span class="comment">%[Hz]</span>
+<span class="comment">% the time-base clock (TBCLK) is a prescaled version of the system</span>
+<span class="comment">% clock (SYSCLKOUT ---- For Up and Down Count ---- TPWM = 2*TBPRD*TTBCLK;</span>
+TPWM = 1/F_PWM;
+TBPRD1 = uint16(TPWM/(2*TTBCLK));
+RED = uint16(50); <span class="comment">%rising edge delay</span>
+FED = uint16(50); <span class="comment">%falling edge delay</span>
+<span class="comment">% Tasks sampling time</span>
+T_pos = 0.001;
+Ts_crt_control = 1/20000;
+Ts_spd_control = 1/10000;
+Ts = Ts_crt_control;
+<span class="comment">% SCI config</span>
+serial_data_length = 7;
+h = 0.01;
+Tf = 0.01;
+<span class="comment">% Interrupt table config</span>
+ECAP1_CPU = 4;
+ECAP1_PIE = 1;
+SCIA_RX_CPU = 9;
+SCIA_RX_PIE = 1;
+INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];
+INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];
+<span class="comment">% Motor control config.</span>
+pp = 16/2;   <span class="comment">%perechi poli</span>
+MinDetectSpeed_RPM = 40; <span class="comment">%RPM</span>
+MaxDetectSpeed_RPM = 2000; <span class="comment">%RPM</span>
+MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;
+MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;
+MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));
+MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));
+MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;
+MinDetectSpeed_Freq = 1/MinDetectSpeed_period;
+Min_eCAP = (MaxDetectSpeed_period/TTBCLK);
+Max_eCAP = (MinDetectSpeed_period/TTBCLK);
+MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;
+
+vref=3.3;
+xT=1.65;
+<span class="comment">% 12bits ADC=4095</span>
+<span class="comment">%vref.....4095</span>
+<span class="comment">%xT.......offset_ADC</span>
+
+offset_ADC = xT*4095/vref;
+
+Rshunt=0.007;
+
+<span class="comment">%Isen=10*Ushunt;</span>
+<span class="comment">%Ishunt=Ushunt/Rshunt;</span>
+<span class="comment">%Ishunt=(reg_adc_i*vref/4095)/10)/Rshunt;</span>
+
+factor_conversie=(1/Rshunt)*(1/10)*(vref/4095);
+
+<span class="comment">% %% 2. Codul MATLAB pentru controller-ul iP &acirc;&#8364;&#8220; params_MF_V1</span>
+<span class="comment">%</span>
+<span class="comment">% clc</span>
+<span class="comment">% clear all</span>
+<span class="comment">% close all</span>
+<span class="comment">% F = 200*10^6; %[Hz] system clock</span>
+<span class="comment">% TTBCLK = 1/F;</span>
+<span class="comment">% TiSamplePhaCrt = 10^-4;</span>
+<span class="comment">% Tf_spd = 0.05;</span>
+<span class="comment">% % Inverter PWM config.</span>
+<span class="comment">% F_PWM = 75000; %[Hz]</span>
+<span class="comment">% % the time-base clock (TBCLK) is a prescaled version of the system</span>
+<span class="comment">% % clock (SYSCLKOUT ---- For Up and Down Count ---- TPWM = 2*TBPRD*TTBCLK;</span>
+<span class="comment">% TPWM = 1/F_PWM;</span>
+<span class="comment">% TBPRD1 = uint16(TPWM/(2*TTBCLK));</span>
+<span class="comment">% RED = 50;</span>
+<span class="comment">% FED = 50;</span>
+<span class="comment">% % Tasks sampling time</span>
+<span class="comment">% T_pos = 0.001;</span>
+<span class="comment">% Ts_crt_control = 1/40000;</span>
+<span class="comment">% TiSampleKalElec = 1/3000;</span>
+<span class="comment">% Ts_spd_control = 1/10000;</span>
+<span class="comment">% Ts = Ts_crt_control;</span>
+<span class="comment">% % SCI config</span>
+<span class="comment">% serial_data_length = 7;</span>
+<span class="comment">% h = 0.01;</span>
+<span class="comment">% Tf = 0.01;</span>
+<span class="comment">% % Interrupt table config</span>
+<span class="comment">% ECAP1_CPU = 4;</span>
+<span class="comment">% ECAP1_PIE = 1;</span>
+<span class="comment">% SCIA_RX_CPU = 9;</span>
+<span class="comment">% SCIA_RX_PIE = 1;</span>
+<span class="comment">% INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];</span>
+<span class="comment">% INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];</span>
+<span class="comment">% % Motor control config.</span>
+<span class="comment">% pp = 16;</span>
+<span class="comment">% MinDetectSpeed_RPM = 40; %RPM</span>
+<span class="comment">% MaxDetectSpeed_RPM = 2000; %RPM</span>
+<span class="comment">% MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;</span>
+<span class="comment">% MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;</span>
+<span class="comment">% MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));</span>
+<span class="comment">% MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));</span>
+<span class="comment">% MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;</span>
+<span class="comment">% MinDetectSpeed_Freq = 1/MinDetectSpeed_period;</span>
+<span class="comment">% Min_eCAP = (MaxDetectSpeed_period/TTBCLK);</span>
+<span class="comment">% Max_eCAP = (MinDetectSpeed_period/TTBCLK);</span>
+<span class="comment">% MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;</span>
+<span class="comment">%</span>
+<span class="comment">% %% 3. Codul MATLAB pentru controller-ul iPD &acirc;&#8364;&#8220; params_MF_V2</span>
+<span class="comment">% clc</span>
+<span class="comment">% clear all</span>
+<span class="comment">% close all</span>
+<span class="comment">% F = 200*10^6; %[Hz] system clock</span>
+<span class="comment">% TTBCLK = 1/F;</span>
+<span class="comment">% TiSamplePhaCrt = 10^-4;</span>
+<span class="comment">% Tf_spd = 0.05;</span>
+<span class="comment">% % Inverter PWM config.</span>
+<span class="comment">% F_PWM = 75000; %[Hz]</span>
+<span class="comment">% % the time-base clock (TBCLK) is a prescaled version of the system</span>
+<span class="comment">% % clock (SYSCLKOUT ---- For Up and Down Count ---- TPWM = 2*TBPRD*TTBCLK;</span>
+<span class="comment">% TPWM = 1/F_PWM;</span>
+<span class="comment">% TBPRD1 = uint16(TPWM/(2*TTBCLK));</span>
+<span class="comment">% RED = 50;</span>
+<span class="comment">% FED = 50;</span>
+<span class="comment">% % Tasks sampling time</span>
+<span class="comment">% T_pos = 0.001;</span>
+<span class="comment">% Ts_crt_control = 1/40000;</span>
+<span class="comment">% TiSampleKalElec = 1/3000;</span>
+<span class="comment">% Ts_spd_control = 1/10000;</span>
+<span class="comment">% Ts = Ts_crt_control;</span>
+<span class="comment">% % SCI config</span>
+<span class="comment">% serial_data_length = 8;</span>
+<span class="comment">% h = 0.01;</span>
+<span class="comment">% Tf = 0.01;</span>
+<span class="comment">% % Interrupt table config</span>
+<span class="comment">% ECAP1_CPU = 4;</span>
+<span class="comment">% ECAP1_PIE = 1;</span>
+<span class="comment">% SCIA_RX_CPU = 9;</span>
+<span class="comment">% SCIA_RX_PIE = 1;</span>
+<span class="comment">% INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];</span>
+<span class="comment">% INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];</span>
+<span class="comment">% % Motor control config.</span>
+<span class="comment">% pp = 16;</span>
+<span class="comment">% MinDetectSpeed_RPM = 40; %RPM</span>
+<span class="comment">% MaxDetectSpeed_RPM = 2000; %RPM</span>
+<span class="comment">% MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;</span>
+<span class="comment">% MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;</span>
+<span class="comment">% MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));</span>
+<span class="comment">% MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));</span>
+<span class="comment">% MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;</span>
+<span class="comment">% MinDetectSpeed_Freq = 1/MinDetectSpeed_period;</span>
+<span class="comment">% Min_eCAP = (MaxDetectSpeed_period/TTBCLK);</span>
+<span class="comment">% Max_eCAP = (MinDetectSpeed_period/TTBCLK);</span>
+<span class="comment">% MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;</span>
+<span class="comment">%</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% 1. Codul MATLAB pentru controller-ul PI â€“ params_PI
+clc
+clear all
+close all
+F = 200*10^6; %[Hz] system clock
+TTBCLK = 1/F;
+TiSamplePhaCrt = 10^-4;
+Tf_spd = 0.01;
+% Inverter PWM config.
+F_PWM = 20000; %[Hz]
+% the time-base clock (TBCLK) is a prescaled version of the system
+% clock (SYSCLKOUT REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH For Up and Down Count REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH TPWM = 2*TBPRD*TTBCLK;
+TPWM = 1/F_PWM;
+TBPRD1 = uint16(TPWM/(2*TTBCLK));
+RED = uint16(50); %rising edge delay
+FED = uint16(50); %falling edge delay
+% Tasks sampling time
+T_pos = 0.001;
+Ts_crt_control = 1/20000;
+Ts_spd_control = 1/10000;
+Ts = Ts_crt_control;
+% SCI config
+serial_data_length = 7;
+h = 0.01;
+Tf = 0.01;
+% Interrupt table config
+ECAP1_CPU = 4;
+ECAP1_PIE = 1;
+SCIA_RX_CPU = 9;
+SCIA_RX_PIE = 1;
+INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];
+INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];
+% Motor control config.
+pp = 16/2;   %perechi poli
+MinDetectSpeed_RPM = 40; %RPM
+MaxDetectSpeed_RPM = 2000; %RPM
+MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;
+MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;
+MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));
+MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));
+MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;
+MinDetectSpeed_Freq = 1/MinDetectSpeed_period;
+Min_eCAP = (MaxDetectSpeed_period/TTBCLK);
+Max_eCAP = (MinDetectSpeed_period/TTBCLK);
+MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;
+
+vref=3.3;
+xT=1.65;
+% 12bits ADC=4095
+%vref.....4095
+%xT.......offset_ADC
+
+offset_ADC = xT*4095/vref;
+
+Rshunt=0.007;
+
+%Isen=10*Ushunt;
+%Ishunt=Ushunt/Rshunt;
+%Ishunt=(reg_adc_i*vref/4095)/10)/Rshunt;
+
+factor_conversie=(1/Rshunt)*(1/10)*(vref/4095);
+
+% %% 2. Codul MATLAB pentru controller-ul iP â€“ params_MF_V1
+% 
+% clc
+% clear all
+% close all
+% F = 200*10^6; %[Hz] system clock
+% TTBCLK = 1/F;
+% TiSamplePhaCrt = 10^-4;
+% Tf_spd = 0.05;
+% % Inverter PWM config.
+% F_PWM = 75000; %[Hz]
+% % the time-base clock (TBCLK) is a prescaled version of the system
+% % clock (SYSCLKOUT REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH For Up and Down Count REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH TPWM = 2*TBPRD*TTBCLK;
+% TPWM = 1/F_PWM;
+% TBPRD1 = uint16(TPWM/(2*TTBCLK));
+% RED = 50;
+% FED = 50;
+% % Tasks sampling time
+% T_pos = 0.001;
+% Ts_crt_control = 1/40000;
+% TiSampleKalElec = 1/3000;
+% Ts_spd_control = 1/10000;
+% Ts = Ts_crt_control;
+% % SCI config
+% serial_data_length = 7;
+% h = 0.01;
+% Tf = 0.01;
+% % Interrupt table config
+% ECAP1_CPU = 4;
+% ECAP1_PIE = 1;
+% SCIA_RX_CPU = 9;
+% SCIA_RX_PIE = 1;
+% INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];
+% INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];
+% % Motor control config.
+% pp = 16;
+% MinDetectSpeed_RPM = 40; %RPM
+% MaxDetectSpeed_RPM = 2000; %RPM
+% MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;
+% MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;
+% MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));
+% MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));
+% MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;
+% MinDetectSpeed_Freq = 1/MinDetectSpeed_period;
+% Min_eCAP = (MaxDetectSpeed_period/TTBCLK);
+% Max_eCAP = (MinDetectSpeed_period/TTBCLK);
+% MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;
+% 
+% %% 3. Codul MATLAB pentru controller-ul iPD â€“ params_MF_V2
+% clc
+% clear all
+% close all
+% F = 200*10^6; %[Hz] system clock
+% TTBCLK = 1/F;
+% TiSamplePhaCrt = 10^-4;
+% Tf_spd = 0.05;
+% % Inverter PWM config.
+% F_PWM = 75000; %[Hz]
+% % the time-base clock (TBCLK) is a prescaled version of the system
+% % clock (SYSCLKOUT REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH For Up and Down Count REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH TPWM = 2*TBPRD*TTBCLK;
+% TPWM = 1/F_PWM;
+% TBPRD1 = uint16(TPWM/(2*TTBCLK));
+% RED = 50;
+% FED = 50;
+% % Tasks sampling time
+% T_pos = 0.001;
+% Ts_crt_control = 1/40000;
+% TiSampleKalElec = 1/3000;
+% Ts_spd_control = 1/10000;
+% Ts = Ts_crt_control;
+% % SCI config
+% serial_data_length = 8;
+% h = 0.01;
+% Tf = 0.01;
+% % Interrupt table config
+% ECAP1_CPU = 4;
+% ECAP1_PIE = 1;
+% SCIA_RX_CPU = 9;
+% SCIA_RX_PIE = 1;
+% INT_CPU = [ECAP1_CPU, SCIA_RX_CPU];
+% INT_PIE = [ ECAP1_PIE, SCIA_RX_PIE];
+% % Motor control config.
+% pp = 16;
+% MinDetectSpeed_RPM = 40; %RPM
+% MaxDetectSpeed_RPM = 2000; %RPM
+% MinDetectSpeed_radps = pp*MinDetectSpeed_RPM*pi/30;
+% MaxDetectSpeed_radps = pp*MaxDetectSpeed_RPM*pi/30;
+% MinDetectSpeed_period = 1/(MinDetectSpeed_radps/(2*pi));
+% MaxDetectSpeed_period = 1/(MaxDetectSpeed_radps/(2*pi));
+% MaxDetectSpeed_Freq = 1/MaxDetectSpeed_period;
+% MinDetectSpeed_Freq = 1/MinDetectSpeed_period;
+% Min_eCAP = (MaxDetectSpeed_period/TTBCLK);
+% Max_eCAP = (MinDetectSpeed_period/TTBCLK);
+% MaxIter_1_ms_eCAP_wait = MinDetectSpeed_period/T_pos;
+% 
+
+##### SOURCE END #####
+--></body></html>
